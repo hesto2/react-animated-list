@@ -1,0 +1,50 @@
+{
+  "name": "react-mui-animated-list",
+  "version": "1.0.0",
+  "description": "Leverages MUI's animations when adding/removing items from a list",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "scripts": {
+    "test": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom",
+    "build": "rollup -c",
+    "start": "rollup -c -w",
+    "prepare": "yarn run build",
+    "predeploy": "cd example && yarn install && yarn run build",
+    "deploy": "gh-pages -d example/build"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.4.0",
+    "use-state-api-hooks": "^1.2.1"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "^4.4.0",
+    "react": "^16.9.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/runtime": "^7.5.5",
+    "@types/jest": "^23.3.13",
+    "@types/lodash": "^4.14.141",
+    "@types/react": "^16.9.2",
+    "cross-env": "^5.2.0",
+    "gh-pages": "^2.0.1",
+    "lodash": "^4.17.15",
+    "react": "^16.9.0",
+    "react-scripts": "^3.1.1",
+    "rollup": "^1.24.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-typescript2": "^0.24.3",
+    "rollup-plugin-url": "^2.1.0",
+    "typescript": "^3.6.4"
+  }
+}
