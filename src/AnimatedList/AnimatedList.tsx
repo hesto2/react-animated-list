@@ -59,7 +59,6 @@ export const AnimatedList = ({ children }: ListProps) => {
 
   const handleExit = (index: any) => {
     setTimeout(() => {
-      console.log("ttttttttt", removed);
       delete removed[index];
       setRemoved({ ...removed });
     }, 300);
@@ -81,7 +80,7 @@ export const AnimatedList = ({ children }: ListProps) => {
             onExited={() => handleExit(i)}
             key={removed[i].key}
             shown={removedShown[i] !== undefined}
-            timeout={{ enter: 0 }}
+            timeout={{ enter: 0, exit: 500 }}
           >
             {removed[i]}
           </AnimatedListItem>
@@ -90,6 +89,11 @@ export const AnimatedList = ({ children }: ListProps) => {
           shown={true}
           key={Child.key || i}
           onExited={() => handleExit(Child.key)}
+          timeout={{
+            enter: previousChildren.find((p: any) => p.key === Child.key)
+              ? 0
+              : 250,
+          }}
         >
           {Child}
         </AnimatedListItem>
@@ -98,7 +102,7 @@ export const AnimatedList = ({ children }: ListProps) => {
             onExited={() => handleExit(i + 1)}
             key={removed[i + 1].key}
             shown={removedShown[i + 1] !== undefined}
-            timeout={{ enter: 0 }}
+            timeout={{ enter: 0, exit: 500 }}
           >
             {removed[i + 1]}
           </AnimatedListItem>
