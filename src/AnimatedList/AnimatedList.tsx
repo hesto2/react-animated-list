@@ -1,6 +1,13 @@
 import * as React from "react";
 import { useEffect } from "react";
-import Grow from "@material-ui/core/Grow";
+import Grow, { GrowProps } from "@material-ui/core/Grow";
+import Fade, { FadeProps } from "@material-ui/core/Fade";
+import Slide, { SlideProps } from "@material-ui/core/Slide";
+import Zoom, { ZoomProps } from "@material-ui/core/Zoom";
+import Collapse, { CollapseProps } from "@material-ui/core/Collapse";
+
+type AnimType = "grow" | "fade" | "slide" | "zoom" | "collapse";
+type AnimProps = GrowProps | FadeProps | SlideProps | ZoomProps | CollapseProps;
 
 function usePrevious(value: any) {
   const ref = React.useRef();
@@ -16,20 +23,48 @@ interface ItemProps {
   onCompleteOutAnimation?: VoidFunction;
   onExited: VoidFunction;
   timeout?: { enter?: number; exit?: number };
+  animation: AnimType;
+  animationProps?: AnimProps;
 }
-function AnimatedListItem({ shown, children, timeout, onExited }: ItemProps) {
+function AnimatedListItem({
+  shown,
+  children,
+  timeout,
+  onExited,
+  animationProps,
+  animation,
+}: ItemProps) {
   useEffect(() => {}, [shown]);
+  const componentMap: any = {
+    grow: Grow,
+    fade: Fade,
+    slide: Slide,
+    zoom: Zoom,
+    collapse: Collapse,
+  };
+  const SelectedComponent = componentMap[animation];
   return (
-    <Grow in={shown} onExiting={onExited} timeout={timeout}>
+    <SelectedComponent
+      {...animationProps}
+      timeout={timeout}
+      in={shown}
+      onExiting={onExited}
+    >
       <div>{children}</div>
-    </Grow>
+    </SelectedComponent>
   );
 }
 
 interface ListProps {
   children: JSX.Element[];
+  animation?: AnimType;
+  animationProps?: AnimProps;
 }
-export const AnimatedList = ({ children }: ListProps) => {
+export const AnimatedList = ({
+  children,
+  animation = "grow",
+  animationProps,
+}: ListProps) => {
   const previousChildren: any = usePrevious(children);
   const [removed, setRemoved] = React.useState<{ [index: number]: any }>([]);
   const [removedShown, setRemovedShown] = React.useState<{
@@ -69,6 +104,8 @@ export const AnimatedList = ({ children }: ListProps) => {
       key={removed[0].key}
       shown={removedShown[0] !== undefined}
       timeout={{ enter: 0 }}
+      animation={animation}
+      animationProps={animationProps}
     >
       {removed[0]}
     </AnimatedListItem>
@@ -77,15 +114,18 @@ export const AnimatedList = ({ children }: ListProps) => {
       <>
         {i === 0 && removed[i] && (
           <AnimatedListItem
+            animation={animation}
             onExited={() => handleExit(i)}
             key={removed[i].key}
             shown={removedShown[i] !== undefined}
-            timeout={{ enter: 0, exit: 500 }}
+            timeout={{ enter: 0, exit: 200 }}
           >
             {removed[i]}
           </AnimatedListItem>
         )}
         <AnimatedListItem
+          animation={animation}
+          animationProps={animationProps}
           shown={true}
           key={Child.key || i}
           onExited={() => handleExit(Child.key)}
@@ -99,6 +139,8 @@ export const AnimatedList = ({ children }: ListProps) => {
         </AnimatedListItem>
         {removed[i + 1] && (
           <AnimatedListItem
+            animation={animation}
+            animationProps={animationProps}
             onExited={() => handleExit(i + 1)}
             key={removed[i + 1].key}
             shown={removedShown[i + 1] !== undefined}
