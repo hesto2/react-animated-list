@@ -3,6 +3,8 @@ node_js:
   - "10"
 before_deploy:
   - npm run build
+  - cd dist
+  - echo "$NPM_API_TOKEN"
 deploy:
   provider: npm
   email: "$NPM_EMAIL"
