@@ -5,8 +5,8 @@ before_deploy:
   - npm run build
 deploy:
   provider: npm
-  email: "$NPM_EMAIL"
-  api_key: "$NPM_API_TOKEN"
+  email: $NPM_EMAIL
+  api_key: $NPM_API_TOKEN
   skip_cleanup: true
   on:
     branch: release
