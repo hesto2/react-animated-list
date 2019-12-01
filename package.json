@@ -1,6 +1,6 @@
 {
   "name": "react-animated-list",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Leverages MUI's animations when adding/removing items from a list",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
