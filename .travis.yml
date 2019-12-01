@@ -4,7 +4,6 @@ node_js:
 before_deploy:
   - npm run build
   - cd dist
-  - echo "$NPM_API_TOKEN"
 deploy:
   provider: npm
   api_key: "$NPM_API_TOKEN"
