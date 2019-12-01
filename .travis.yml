@@ -1,5 +1,5 @@
 language: node_js
-node_js: 
+node_js:
   - "10"
 before_deploy:
   - npm run build
@@ -7,8 +7,9 @@ before_deploy:
   - echo "$NPM_API_TOKEN"
 deploy:
   provider: npm
-  email: "$NPM_EMAIL"
   api_key: "$NPM_API_TOKEN"
+  email: "$NPM_EMAIL"
+  edge: true
   skip_cleanup: true
   on:
     branch: release
