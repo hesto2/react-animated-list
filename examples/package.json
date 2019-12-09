@@ -6,7 +6,7 @@
     "@material-ui/core": "^4.4.0",
     "react": "link:../node_modules/react",
     "react-dom": "^16.8.6",
-    "react-mui-animated-list": "link:..",
+    "react-animated-list": "link:../dist",
     "react-scripts": "^3.0.1",
     "use-state-api-hooks": "^1.2.1",
     "uuid": "^3.3.3"
