@@ -8,12 +8,6 @@ export default {
   output: [
     {
       file: "dist/index.es.js",
-      format: "cjs",
-      exports: "named",
-      sourcemap: true,
-    },
-    {
-      file: "dist/index.es.js",
       format: "es",
       exports: "named",
       sourcemap: true,
