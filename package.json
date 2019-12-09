@@ -1,7 +1,17 @@
 {
   "name": "react-animated-list",
+  "keywords": [
+    "react",
+    "react-dom",
+    "animation",
+    "component",
+    "react-component",
+    "flip",
+    "web-animations",
+    "array"
+  ],
   "version": "0.0.5",
-  "description": "Leverages MUI's animations when adding/removing items from a list",
+  "description": "Simple way of animating when components are added or removed from an array",
   "main": "index.es.js",
   "module": "index.es.js",
   "jsnext:main": "index.es.js",

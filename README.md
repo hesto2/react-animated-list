@@ -4,6 +4,8 @@
 
 React animated list is a simple way you can have any of your array-based elements be automatically animated. This applies to when they are both rendered, and removed.
 
+[![Edit nifty-platform-dj1iz](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/nifty-platform-dj1iz?fontsize=14&hidenavigation=1&theme=dark)
+
 ## Getting Started
 
 ### Installing
