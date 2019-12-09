@@ -24,7 +24,7 @@
     "test": "echo no tests yet",
     "dotest": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "build": "rollup -c; cp ./package.json ./dist/package.json",
+    "build": "rollup -c; cp ./package.json ./dist/package.json; cp ./README.md ./dist/README.md",
     "start": "rollup -c -w",
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
