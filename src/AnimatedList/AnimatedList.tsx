@@ -8,6 +8,13 @@ import Collapse, { CollapseProps } from "@material-ui/core/Collapse";
 
 type AnimType = "grow" | "fade" | "slide" | "zoom" | "collapse";
 type AnimProps = GrowProps | FadeProps | SlideProps | ZoomProps | CollapseProps;
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
+  T,
+  Exclude<keyof T, Keys>
+> &
+  {
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+  }[Keys];
 
 function usePrevious(value: any) {
   const ref = React.useRef();
@@ -56,14 +63,16 @@ function AnimatedListItem({
 }
 
 interface ListProps {
-  children: JSX.Element[];
+  children: RequireAtLeastOne<any, "key">[] | RequireAtLeastOne<any, "key">;
   animation?: AnimType;
   animationProps?: AnimProps;
+  containerClass?: string;
 }
 export const AnimatedList = ({
   children,
   animation = "grow",
   animationProps,
+  containerClass,
 }: ListProps) => {
   const previousChildren: any = usePrevious(children);
   const [removed, setRemoved] = React.useState<{ [index: number]: any }>([]);
@@ -73,7 +82,7 @@ export const AnimatedList = ({
 
   const removeChildren = () => {
     const newlyRemoved = previousChildren.filter(
-      (c: any) => children.findIndex(oc => oc.key === c.key) === -1
+      (c: any) => children.findIndex((oc: any) => oc.key === c.key) === -1
     );
     newlyRemoved.forEach((r: any) => {
       const index = previousChildren.findIndex((rr: any) => r.key === rr.key);
@@ -98,58 +107,62 @@ export const AnimatedList = ({
       setRemoved({ ...removed });
     }, 300);
   };
-  return children.length === 0 && removed[0] ? (
-    <AnimatedListItem
-      onExited={() => handleExit(0)}
-      key={removed[0].key}
-      shown={removedShown[0] !== undefined}
-      timeout={{ enter: 0 }}
-      animation={animation}
-      animationProps={animationProps}
-    >
-      {removed[0]}
-    </AnimatedListItem>
-  ) : (
-    children.map((Child, i: number) => (
-      <>
-        {i === 0 && removed[i] && (
-          <AnimatedListItem
-            animation={animation}
-            onExited={() => handleExit(i)}
-            key={removed[i].key}
-            shown={removedShown[i] !== undefined}
-            timeout={{ enter: 0, exit: 200 }}
-          >
-            {removed[i]}
-          </AnimatedListItem>
-        )}
+  return (
+    <div className={containerClass}>
+      {children.length === 0 && removed[0] ? (
         <AnimatedListItem
+          onExited={() => handleExit(0)}
+          key={removed[0].key}
+          shown={removedShown[0] !== undefined}
+          timeout={{ enter: 0 }}
           animation={animation}
           animationProps={animationProps}
-          shown={true}
-          key={Child.key || i}
-          onExited={() => handleExit(Child.key)}
-          timeout={{
-            enter: previousChildren.find((p: any) => p.key === Child.key)
-              ? 0
-              : 250,
-          }}
         >
-          {Child}
+          {removed[0]}
         </AnimatedListItem>
-        {removed[i + 1] && (
-          <AnimatedListItem
-            animation={animation}
-            animationProps={animationProps}
-            onExited={() => handleExit(i + 1)}
-            key={removed[i + 1].key}
-            shown={removedShown[i + 1] !== undefined}
-            timeout={{ enter: 0, exit: 500 }}
-          >
-            {removed[i + 1]}
-          </AnimatedListItem>
-        )}
-      </>
-    ))
+      ) : (
+        children.map((Child: any, i: number) => (
+          <>
+            {i === 0 && removed[i] && (
+              <AnimatedListItem
+                animation={animation}
+                onExited={() => handleExit(i)}
+                key={removed[i].key}
+                shown={removedShown[i] !== undefined}
+                timeout={{ enter: 0, exit: 200 }}
+              >
+                {removed[i]}
+              </AnimatedListItem>
+            )}
+            <AnimatedListItem
+              animation={animation}
+              animationProps={animationProps}
+              shown={true}
+              key={Child.key || i}
+              onExited={() => handleExit(Child.key)}
+              timeout={{
+                enter: previousChildren.find((p: any) => p.key === Child.key)
+                  ? 0
+                  : 250,
+              }}
+            >
+              {Child}
+            </AnimatedListItem>
+            {removed[i + 1] && (
+              <AnimatedListItem
+                animation={animation}
+                animationProps={animationProps}
+                onExited={() => handleExit(i + 1)}
+                key={removed[i + 1].key}
+                shown={removedShown[i + 1] !== undefined}
+                timeout={{ enter: 0, exit: 500 }}
+              >
+                {removed[i + 1]}
+              </AnimatedListItem>
+            )}
+          </>
+        ))
+      )}
+    </div>
   );
 };
