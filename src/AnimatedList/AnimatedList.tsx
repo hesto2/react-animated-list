@@ -66,13 +66,13 @@ interface ListProps {
   children: RequireAtLeastOne<any, "key">[] | RequireAtLeastOne<any, "key">;
   animation?: AnimType;
   animationProps?: AnimProps;
-  containerClass?: string;
+  initialAnimationDuration?: number;
 }
 export const AnimatedList = ({
   children,
   animation = "grow",
   animationProps,
-  containerClass,
+  initialAnimationDuration = 750,
 }: ListProps) => {
   const previousChildren: any = usePrevious(children);
   const [removed, setRemoved] = React.useState<{ [index: number]: any }>([]);
@@ -107,8 +107,14 @@ export const AnimatedList = ({
       setRemoved({ ...removed });
     }, 300);
   };
+
+  const getEnterDelayTime = (index: number) => {
+    const delayTime =
+      initialAnimationDuration * ((index + 1) / (children.length || 1));
+    return delayTime;
+  };
   return (
-    <div className={containerClass}>
+    <>
       {children.length === 0 && removed[0] ? (
         <AnimatedListItem
           onExited={() => handleExit(0)}
@@ -143,7 +149,7 @@ export const AnimatedList = ({
               timeout={{
                 enter: previousChildren.find((p: any) => p.key === Child.key)
                   ? 0
-                  : 250,
+                  : getEnterDelayTime(i),
               }}
             >
               {Child}
@@ -163,6 +169,6 @@ export const AnimatedList = ({
           </>
         ))
       )}
-    </div>
+    </>
   );
 };

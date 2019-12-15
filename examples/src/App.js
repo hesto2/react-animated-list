@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import "./App.css";
 import { Card, CardContent, CardActions } from "@material-ui/core";
-import { AnimatedList } from "react-mui-animated-list";
+import { AnimatedList } from "react-animated-list";
 import { Button } from "@material-ui/core";
+import { withStyles, createStyles } from "@material-ui/core";
+
+const styles = theme =>
+  createStyles({
+    cardRow: { display: "flex", maxWidth: theme.spacing(75), flexWrap: "wrap" },
+  });
 
 function TestCard({ onDismiss, children }) {
   return (
@@ -17,17 +23,37 @@ function TestCard({ onDismiss, children }) {
   );
 }
 
-const App = () => {
-  const [cards, setCards] = useState([1, 2, 3]);
+const App = ({ classes }) => {
+  const [cards, setCards] = useState([
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+  ]);
+
   const addItem = () => {
     setCards([...cards, new Date().getMilliseconds()]);
   };
+
   const onDismiss = (card, cards) => {
     const newCards = cards.filter(c => {
       return card !== c;
     });
     setCards(newCards);
   };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -40,20 +66,22 @@ const App = () => {
         >
           Add
         </Button>
-        <AnimatedList animation={"grow"}>
-          {cards.map((c, i) => (
-            <TestCard
-              key={c}
-              onDismiss={() => onDismiss(c, cards)}
-              cards={cards}
-            >
-              {c}
-            </TestCard>
-          ))}
-        </AnimatedList>
+        <div className={classes.cardRow}>
+          <AnimatedList animation={"grow"} initialAnimationDuration={1000}>
+            {cards.map((c, i) => (
+              <TestCard
+                key={c}
+                onDismiss={() => onDismiss(c, cards)}
+                cards={cards}
+              >
+                {c}
+              </TestCard>
+            ))}
+          </AnimatedList>
+        </div>
       </header>
     </div>
   );
 };
 
-export default App;
+export default withStyles(styles)(App);
