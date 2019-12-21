@@ -11,6 +11,7 @@
     "array"
   ],
   "version": "0.1.2",
+  "repository": "http://github.com/hesto2/react-animated-list",
   "description": "Simple way of animating when components are added or removed from an array",
   "main": "index.es.js",
   "module": "index.es.js",
