@@ -128,7 +128,7 @@ export const AnimatedList = ({
         </AnimatedListItem>
       ) : (
         children.map((Child: any, i: number) => (
-          <>
+          <React.Fragment key={i}>
             {i === 0 && removed[i] && (
               <AnimatedListItem
                 animation={animation}
@@ -166,7 +166,7 @@ export const AnimatedList = ({
                 {removed[i + 1]}
               </AnimatedListItem>
             )}
-          </>
+          </React.Fragment>
         ))
       )}
     </>
